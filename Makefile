@@ -1,6 +1,8 @@
 NAME = malloc
 DEPENDENCIES = libft
-SOURCES = malloc.c
+SOURCES = malloc.c \
+			split_block.c \
+			find_block.c \
 
 SOURCES_FOLDER = .
 
@@ -11,7 +13,8 @@ INCLUDES_FOLDER = includes
 OBJECTS_FOLDER = .objects
 MAIN = main.c
 MAIN_OBJECT = $(OBJECTS_FOLDER)/$(MAIN:.c=.o)
-INCLUDES = $(NAME).h
+INCLUDES = $(NAME).h \
+			malloc_helpers.h
 
 SOURCES_DEPENDENCIES = $(foreach dep, $(DEPENDENCIES), libraries/$(dep)/$(dep).a)
 INCLUDES_LIBRARIES = $(foreach dep,$(DEPENDENCIES),-I libraries/$(dep)/includes)

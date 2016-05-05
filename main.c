@@ -1,7 +1,8 @@
 #include <malloc.h>
 
-int main(void)
+t_block		*g_base;
+
+int		main(void)
 {
-	malloc(3);
 	return 0;
 }
