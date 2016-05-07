@@ -4,5 +4,6 @@ t_block		*g_base;
 
 int		main(void)
 {
-	return 0;
+	g_base = NULL;
+	return (0);
 }

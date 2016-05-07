@@ -2,10 +2,9 @@
 # define MALLOC_HELPERS_H
 
 # include <libft.h>
-# include <sys/time.h>
-# include <sys/resource.h>
+# include <sys/mman.h>
 
-# define ALIGN(X)		(((((X) - 1)) >> 2) << 2) + 4)) // try X-1 and (X)-1
+// # define ALIGN(X)		(((((X) - 1)) >> 2) << 2) + 4)) // try X-1 and (X)-1
 # define BLOCK_SIZE		sizeof(struct s_block_size);
 
 struct	s_block_size
@@ -13,6 +12,7 @@ struct	s_block_size
 	void	*next;
 	size_t	size;
 	int		free;
+	int		start_heap;
 };
 
 typedef struct	s_block
@@ -20,6 +20,7 @@ typedef struct	s_block
 	struct s_block	*next;
 	size_t			size;
 	int				free;
+	int				start_heap;
 	char			data[1];
 }				t_block;
 
