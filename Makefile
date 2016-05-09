@@ -3,6 +3,8 @@ DEPENDENCIES = libft
 SOURCES = malloc.c \
 			split_block.c \
 			find_block.c \
+			extend_heap.c \
+			malloc_debug.c \
 
 SOURCES_FOLDER = .
 

@@ -1,9 +1,7 @@
 #include <malloc.h>
 
-// t_block		*g_base;
-
 int		main(void)
 {
-	// g_base = NULL;
+	malloc(34);	
 	return (0);
 }
