@@ -4,6 +4,7 @@
 # include <libft.h>
 # include <sys/mman.h>
 # include <sys/resource.h>
+#include <stdio.h>//
 
 # define TINY_ALLOC_SIZE	992
 # define TINY_ZONE_SIZE		2097152
@@ -13,6 +14,7 @@
 
 # define ALIGN(X)			(((((X) - 1)) >> 2) << 2) + 4))
 # define BLOCK_SIZE			(sizeof(struct s_block) - sizeof(char))
+# define MALLOC_DEBUG(X)	malloc_debug(__LINE__, __FILE__, X)
 
 enum e_zone
 {
@@ -51,6 +53,6 @@ t_block			*find_block(t_block **last, size_t size);
 t_block			*extend_heap(t_block *last, size_t size, int type_zone);
 void			split_block(t_block *b, size_t size);
 
-void malloc_debug(char *str);
+void			malloc_debug(int line, char *file, char *str);
 
 #endif
