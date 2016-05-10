@@ -9,10 +9,7 @@ t_block	*extend_heap(t_block **last, size_t size, int type_zone)
 		return (NULL);
 	b->size = size;
 	b->next = NULL;
-	b->flag.all_flags = 0;
-	b->flag.free = 1;
-	b->flag.start_heap = 1;
-	b->flag.type_zone = type_zone;
+	b->flag = IS_FREE | IS_START_HEAP | type_zone;
 	if (*last)
 		(*last)->next = b;
 	else

@@ -12,8 +12,11 @@
 # define SMALL_ALLOC_SIZE	127000
 # define SMALL_ZONE_SIZE	16777216
 
+# define IS_FREE			001000
+# define IS_START_HEAP		010000
+
 # define ALIGN(X)			(((((((X) - 1)) >> 2) << 2) + 4))
-# define BLOCK_SIZE			(2 * sizeof(void *) + sizeof(size_t) + sizeof(int) + sizeof(t_flag))
+# define BLOCK_SIZE			(2 * sizeof(void *) + 2 * sizeof(int) + sizeof(t_flag))
 # define MALLOC_DEBUG(X)	malloc_debug(__LINE__, __FILE__, X)
 
 typedef struct s_block		t_block;
@@ -39,7 +42,7 @@ typedef struct	s_block
 	t_block	*prev;
 	size_t	size;
 	int		rest;
-	t_flag	flag;
+	int		flag;
 	char	data[1];
 }				t_block;
 
