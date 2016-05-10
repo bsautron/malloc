@@ -12,9 +12,11 @@
 # define SMALL_ALLOC_SIZE	127000
 # define SMALL_ZONE_SIZE	16777216
 
-# define ALIGN(X)			(((((X) - 1)) >> 2) << 2) + 4))
-# define BLOCK_SIZE			(sizeof(struct s_block) - sizeof(char))
+# define ALIGN(X)			(((((((X) - 1)) >> 2) << 2) + 4))
+# define BLOCK_SIZE			(2 * sizeof(void *) + sizeof(size_t) + sizeof(int) + sizeof(t_flag))
 # define MALLOC_DEBUG(X)	malloc_debug(__LINE__, __FILE__, X)
+
+typedef struct s_block		t_block;
 
 enum e_zone
 {
@@ -33,11 +35,12 @@ typedef union	u_flag
 
 typedef struct	s_block
 {
-	struct s_block	*next;
-	struct s_block	*prev;
-	size_t			size;
-	t_flag			flag;
-	char			data[1];
+	t_block	*next;
+	t_block	*prev;
+	size_t	size;
+	int		rest;
+	t_flag	flag;
+	char	data[1];
 }				t_block;
 
 typedef struct	s_mmap
@@ -49,8 +52,8 @@ typedef struct	s_mmap
 
 extern t_block	*g_base[3];
 
-t_block			*find_block(t_block **last, size_t size);
-t_block			*extend_heap(t_block *last, size_t size, int type_zone);
+t_block			*find_block(t_block **last, size_t size, int type_zone);
+t_block			*extend_heap(t_block **last, size_t size, int type_zone);
 void			split_block(t_block *b, size_t size);
 
 void			malloc_debug(int line, char *file, char *str);
