@@ -1,52 +1,66 @@
-NAME = malloc
+ifeq ($(HOSTTYPE),)
+HOSTTYPE := $(shell uname -m)_$(shell uname -s)
+endif
+
+NAME = libft_malloc_$(HOSTTYPE)
 DEPENDENCIES = libft
 SOURCES = malloc.c \
 			split_block.c \
 			find_block.c \
 			extend_heap.c \
 			malloc_debug.c \
+			show_alloc_mem.c
 
 SOURCES_FOLDER = .
 
+LIBRARIES_FOLDER = .
 CC = gcc
+LIB_NAME = $(NAME).so
 CFLAGS = -Wextra -Wall -Werror
 TEST_FORDER = test
 INCLUDES_FOLDER = includes
-OBJECTS_FOLDER = .objects
-MAIN = main.c
-MAIN_OBJECT = $(OBJECTS_FOLDER)/$(MAIN:.c=.o)
-INCLUDES = $(NAME).h \
+OBJECTS_FOLDER = .objects/$(NAME)
+INCLUDES = malloc.h \
 			malloc_helpers.h
 
-SOURCES_DEPENDENCIES = $(foreach dep, $(DEPENDENCIES), libraries/$(dep)/$(dep).a)
-INCLUDES_LIBRARIES = $(foreach dep,$(DEPENDENCIES),-I libraries/$(dep)/includes)
-HEADERS_LIBRARIES = $(foreach dep,$(DEPENDENCIES),libraries/$(dep)/includes/$(dep).h)
-MAKE_LIBRARIES = $(foreach dep,$(DEPENDENCIES),make -C libraries/$(dep);)
-REBUILD_LIBRARIES = $(foreach dep,$(DEPENDENCIES),make re -C libraries/$(dep);)
+SOURCES_DEPENDENCIES = $(foreach dep,$(DEPENDENCIES), $(LIBRARIES_FOLDER)/$(dep)/$(dep).a)
+LIBRARIES = $(foreach dep, $(DEPENDENCIES), -L$(LIBRARIES_FOLDER)/$(dep)/ -$(subst lib,l,$(dep)))
+INCLUDES_LIBRARIES = $(foreach dep,$(DEPENDENCIES),-I $(LIBRARIES_FOLDER)/$(dep)/includes)
+HEADERS_LIBRARIES = $(foreach dep,$(DEPENDENCIES),$(LIBRARIES_FOLDER)/$(dep)/includes/$(dep).h)
+MAKE_LIBRARIES = $(foreach dep,$(DEPENDENCIES),make -C $(LIBRARIES_FOLDER)/$(dep);)
+REBUILD_LIBRARIES = $(foreach dep,$(DEPENDENCIES),make re -C $(LIBRARIES_FOLDER)/$(dep);)
 
 OBJECTS = $(SOURCES:%.c=%.o)
 
-all: init makelib $(NAME)
+all: init $(LIB_NAME)
 
-rebuild: fclean init rebuildlib $(NAME)
+test:
+	@echo $(addprefix $(OBJECTS_FOLDER)/$(SOURCES_FOLDER)/, $(OBJECTS))
+	@echo $(OBJECTS_FOLDER)/$(SOURCES_FOLDER)/%.o
 
-makelib:
-	$(MAKE_LIBRARIES)
-
-rebuildlib:
-	$(REBUILD_LIBRARIES)
-
+ifdef DEPENDENCIES
 init:
-	mkdir -p $(OBJECTS_FOLDER)/$(SOURCES_FOLDER)
+	$(MAKE_LIBRARIES)
+	@mkdir -p $(OBJECTS_FOLDER)/$(SOURCES_FOLDER)
 
-$(NAME): $(MAIN_OBJECT) $(addprefix $(OBJECTS_FOLDER)/$(SOURCES_FOLDER)/, $(OBJECTS))
-	$(CC) $(CFLAGS) -o $@ $(MAIN_OBJECT) $(addprefix $(OBJECTS_FOLDER)/$(SOURCES_FOLDER)/, $(OBJECTS)) $(SOURCES_DEPENDENCIES)
+$(OBJECTS_FOLDER)/$(SOURCES_FOLDER)/%.o: $(SOURCES_FOLDER)/%.c $(addprefix $(INCLUDES_FOLDER)/, $(INCLUDES))
+	$(CC) $(CFLAGS) -I $(INCLUDES_FOLDER) $(INCLUDES_LIBRARIES) -o $@ -c $<
+endif
+
+ifndef DEPENDENCIES
+init:
+	@mkdir -p $(OBJECTS_FOLDER)/$(SOURCES_FOLDER)
+
+$(OBJECTS_FOLDER)/$(SOURCES_FOLDER)/%.o: $(SOURCES_FOLDER)/%.c $(addprefix $(INCLUDES_FOLDER)/, $(INCLUDES))
+	$(CC) $(CFLAGS) -I $(INCLUDES_FOLDER) -o $@ -c $<
+endif
 
 $(MAIN_OBJECT): $(MAIN)
-	$(CC) $(CFLAGS) -I $(INCLUDES_FOLDER) -o $(MAIN_OBJECT) -c $(MAIN) $(INCLUDES_LIBRARIES)
+	$(CC) $(CFLAGS) -I $(INCLUDES_FOLDER) -o $(MAIN_OBJECT) -c $(MAIN)
 
-$(addprefix $(OBJECTS_FOLDER)/$(SOURCES_FOLDER)/, %.o): $(SOURCES_FOLDER)/%.c $(addprefix $(INCLUDES_FOLDER)/, $(INCLUDES)) $(HEADERS_LIBRARIES)
-	$(CC) $(CFLAGS) -I $(INCLUDES_FOLDER) -o $@ -c $< $(INCLUDES_LIBRARIES)
+$(LIB_NAME): $(addprefix $(OBJECTS_FOLDER)/$(SOURCES_FOLDER)/, $(OBJECTS))
+	ar rc $(LIB_NAME) $(addprefix $(OBJECTS_FOLDER)/$(SOURCES_FOLDER)/, $(OBJECTS))
+	ranlib $(LIB_NAME)
 
 clean:
 	rm -f $(addprefix $(OBJECTS_FOLDER)/$(SOURCES_FOLDER)/, $(OBJECTS))

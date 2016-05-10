@@ -8,7 +8,11 @@ int		main(void)
 	// printf("sizeof(size_t) = %lu\n", sizeof(size_t));
 	// printf("sizeof(t_flag) = %lu\n", sizeof(t_flag));
 	// printf("sizeof(char [1]) = %ld\n", sizeof(char [1]) );
-	printf("malloc return %p\n", malloc(34));
+	// printf("malloc return %p\n", malloc(3504));
 	// printf("malloc return %p\n", malloc(34));
+	// printf("malloc return %p\n", malloc(2));
+	// printf("malloc return %p\n", malloc(4));
+
+	show_alloc_mem();
 	return (0);
 }

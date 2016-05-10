@@ -37,12 +37,12 @@ void *get_block(t_block **last, size_t size, int type_zone)
 	if (*last == NULL)
 		get_new_zone(last, size, type_zone);
 	b = find_block(last, size, type_zone);
-	printf("find %p\n", b);
+	// printf("find %p\n", b);
 	if (b)
 	{
 		if ((b->size - size) >= (BLOCK_SIZE + 4))
 			split_block(b, size);
-		// b->flag.free = 0;
+		b->flag ^= IS_FREE;
 	}
 	return (b);
 }
@@ -52,7 +52,7 @@ void 	*malloc(size_t size)
 	t_block		*b;
 	t_block		*last;
 
-	printf("-- %s: %ld --\n", "new malloc", size);
+	// printf("-- %s: %ld --\n", "new malloc", size);
 	if (size <= 0)
 	{
 		MALLOC_DEBUG("size <= 0 -> return NULL");
@@ -62,7 +62,7 @@ void 	*malloc(size_t size)
 	{
 		MALLOC_DEBUG("Malloc to TINY_ZONE");
 		last = g_base[TINY];
-		printf("last %p\n", last);
+		// printf("last %p\n", last);
 		b = get_block(&last, size, TINY);
 	}
 	else if (size <= SMALL_ALLOC_SIZE)

@@ -5,6 +5,7 @@
 # include <sys/mman.h>
 # include <sys/resource.h>
 #include <stdio.h>//
+// use getlimit, getpagesize
 
 # define TINY_ALLOC_SIZE	992
 # define TINY_ZONE_SIZE		2097152
