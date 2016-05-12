@@ -2,6 +2,9 @@
 
 void malloc_debug(int line, char *file, char *str)
 {
+	(void)line;
+	(void)file;
+	(void)str;
 	if (getenv("MALLOC_DEBUG"))
 	{
 		ft_putstr("[malloc_debug] Line ");

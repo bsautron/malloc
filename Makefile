@@ -9,12 +9,13 @@ SOURCES = malloc.c \
 			find_block.c \
 			extend_heap.c \
 			malloc_debug.c \
-			show_alloc_mem.c
+			show_alloc_mem.c \
+			main.c
 
-SOURCES_FOLDER = .
+SOURCES_FOLDER = sources
 
 LIBRARIES_FOLDER = .
-CC = gcc
+CC = clang
 LIB_NAME = $(NAME).so
 CFLAGS = -Wextra -Wall -Werror
 TEST_FORDER = test
@@ -38,29 +39,18 @@ test:
 	@echo $(addprefix $(OBJECTS_FOLDER)/$(SOURCES_FOLDER)/, $(OBJECTS))
 	@echo $(OBJECTS_FOLDER)/$(SOURCES_FOLDER)/%.o
 
-ifdef DEPENDENCIES
 init:
 	$(MAKE_LIBRARIES)
 	@mkdir -p $(OBJECTS_FOLDER)/$(SOURCES_FOLDER)
 
 $(OBJECTS_FOLDER)/$(SOURCES_FOLDER)/%.o: $(SOURCES_FOLDER)/%.c $(addprefix $(INCLUDES_FOLDER)/, $(INCLUDES))
 	$(CC) $(CFLAGS) -I $(INCLUDES_FOLDER) $(INCLUDES_LIBRARIES) -o $@ -c $<
-endif
-
-ifndef DEPENDENCIES
-init:
-	@mkdir -p $(OBJECTS_FOLDER)/$(SOURCES_FOLDER)
-
-$(OBJECTS_FOLDER)/$(SOURCES_FOLDER)/%.o: $(SOURCES_FOLDER)/%.c $(addprefix $(INCLUDES_FOLDER)/, $(INCLUDES))
-	$(CC) $(CFLAGS) -I $(INCLUDES_FOLDER) -o $@ -c $<
-endif
 
 $(MAIN_OBJECT): $(MAIN)
-	$(CC) $(CFLAGS) -I $(INCLUDES_FOLDER) -o $(MAIN_OBJECT) -c $(MAIN)
+	$(CC) $(CFLAGS) -I $(INCLUDES_LIBRARIES) -o $(MAIN_OBJECT) -c $(MAIN)
 
 $(LIB_NAME): $(addprefix $(OBJECTS_FOLDER)/$(SOURCES_FOLDER)/, $(OBJECTS))
-	ar rc $(LIB_NAME) $(addprefix $(OBJECTS_FOLDER)/$(SOURCES_FOLDER)/, $(OBJECTS))
-	ranlib $(LIB_NAME)
+	$(CC) $(CFLAGS) -I $(INCLUDES_FOLDER) $(LIBRARIES) -o $@ $(addprefix $(OBJECTS_FOLDER)/$(SOURCES_FOLDER)/, $(OBJECTS))
 
 clean:
 	rm -f $(addprefix $(OBJECTS_FOLDER)/$(SOURCES_FOLDER)/, $(OBJECTS))
