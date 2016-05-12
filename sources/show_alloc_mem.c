@@ -1,6 +1,5 @@
 #include <malloc.h>
 
-
 static void print_memory(t_block *b, char *zone_name)
 {
 	t_block	*tmp;
@@ -11,7 +10,7 @@ static void print_memory(t_block *b, char *zone_name)
 		if ((tmp->flag & IS_START_HEAP) != 0)
 			printf("%s : %p\n", zone_name, tmp);
 		if ((tmp->flag & IS_FREE) == 0)
-			printf("%p - %p : %lu octets\n", tmp->data, tmp->data + tmp->size, tmp->size);
+			printf("%p - %p (+ %d): %lu octets\n", tmp->data, tmp->data + tmp->size, tmp->rest, tmp->size);
 		tmp = tmp->next;
 	}
 }
@@ -19,8 +18,7 @@ static void print_memory(t_block *b, char *zone_name)
 // sort by addr
 void 	show_alloc_mem(void)
 {
-	(void)print_memory;
-	// print_memory(g_base[0], "TINY");
-	// print_memory(g_base[1], "SMALL");
-	// print_memory(g_base[2], "LARGE");
+	print_memory(g_base[TINY], "TINY");
+	print_memory(g_base[SMALL], "SMALL");
+	print_memory(g_base[LARGE], "LARGE");
 }

@@ -8,15 +8,16 @@
 // use getlimit, getpagesize
 
 # define TINY_ALLOC_SIZE	992
-# define TINY_ZONE_SIZE		2097152
+# define TINY_ZONE_SIZE		(512 * getpagesize())
 
 # define SMALL_ALLOC_SIZE	127000
-# define SMALL_ZONE_SIZE	16777216
+# define SMALL_ZONE_SIZE	(4096 * getpagesize())
 
 # define IS_FREE			001000
 # define IS_START_HEAP		010000
 
-# define ALIGN(X)			(((((((X) - 1)) >> 2) << 2) + 4))
+# define ALIGN4(X)			(((((((X) - 1)) >> 2) << 2) + 4))
+# define ALIGNPAGE(X, P)	(((X - 1) / P) * P + P)
 # define BLOCK_SIZE			(2 * sizeof(void *) + 2 * sizeof(int) + sizeof(t_flag))
 # define MALLOC_DEBUG(X)	malloc_debug(__LINE__, __FILE__, X)
 

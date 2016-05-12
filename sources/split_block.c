@@ -6,9 +6,9 @@ void	split_block(t_block *b, size_t size)
 	size_t		align_size;
 
 	// printf("BEFOR SPLIT: b->size = %ld\n", b->size);
-	align_size = ALIGN(size);
+	align_size = ALIGN4(size);
 	new = ((void *)b->data) + align_size;
-	new->size = b->size - align_size - BLOCK_SIZE;
+	new->size = (b->size + b->rest) - align_size - BLOCK_SIZE;
 	new->next = b->next;
 	new->flag = b->flag;
 	if ((new->flag & IS_START_HEAP) != 0)

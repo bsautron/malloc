@@ -5,7 +5,9 @@ t_block		*g_base[3];
 void 	*get_new_zone(t_block **last, size_t size, int type_zone)
 {
 	t_block		*b;
+	void 		*not_first_expand;
 
+	not_first_expand = *last;
 	if (size <= 0)
 	{
 		MALLOC_DEBUG("Can't get zone with 0 size");
@@ -26,7 +28,11 @@ void 	*get_new_zone(t_block **last, size_t size, int type_zone)
 	b = extend_heap(last, size, type_zone);
 	if (!b)
 		return (NULL);
-	g_base[type_zone] = b;
+
+	if (not_first_expand)
+		(*last)->next = b;
+	else
+		g_base[type_zone] = b;
 	return (b);
 }
 
@@ -43,6 +49,13 @@ void *get_block(t_block **last, size_t size, int type_zone)
 		if ((b->size - size) >= (BLOCK_SIZE + 4))
 			split_block(b, size);
 		b->flag ^= IS_FREE;
+	}
+	else
+	{
+		get_new_zone(last, size, type_zone);
+		b = find_block(last, size, type_zone);
+		if (b)
+			b->flag ^= IS_FREE;
 	}
 	return (b);
 }
@@ -75,7 +88,8 @@ void 	*malloc(size_t size)
 	{
 		MALLOC_DEBUG("Malloc to LARGE_ZONE");
 		last = g_base[LARGE];
-		return (NULL);
+		b = get_block(&last, size, LARGE);
+		// return (NULL);
 	}
 	return (b->data);
 }

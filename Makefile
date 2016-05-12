@@ -10,7 +10,6 @@ SOURCES = malloc.c \
 			extend_heap.c \
 			malloc_debug.c \
 			show_alloc_mem.c \
-			main.c
 
 SOURCES_FOLDER = sources
 
@@ -46,11 +45,16 @@ init:
 $(OBJECTS_FOLDER)/$(SOURCES_FOLDER)/%.o: $(SOURCES_FOLDER)/%.c $(addprefix $(INCLUDES_FOLDER)/, $(INCLUDES))
 	$(CC) $(CFLAGS) -I $(INCLUDES_FOLDER) $(INCLUDES_LIBRARIES) -o $@ -c $<
 
+
+prog: all
+	$(CC) $(CFLAGS) -I $(INCLUDES_FOLDER) $(INCLUDES_LIBRARIES) -o main.o -c main.c
+	$(CC) $(CFLAGS) -I $(INCLUDES_FOLDER) main.o $(addprefix $(OBJECTS_FOLDER)/$(SOURCES_FOLDER)/, $(OBJECTS)) -L. -lft_malloc_$(HOSTTYPE)
+
 $(MAIN_OBJECT): $(MAIN)
 	$(CC) $(CFLAGS) -I $(INCLUDES_LIBRARIES) -o $(MAIN_OBJECT) -c $(MAIN)
 
 $(LIB_NAME): $(addprefix $(OBJECTS_FOLDER)/$(SOURCES_FOLDER)/, $(OBJECTS))
-	$(CC) $(CFLAGS) -I $(INCLUDES_FOLDER) $(LIBRARIES) -o $@ $(addprefix $(OBJECTS_FOLDER)/$(SOURCES_FOLDER)/, $(OBJECTS))
+	$(CC) $(CFLAGS) -shared -I $(INCLUDES_FOLDER) $(LIBRARIES) -o $@ $(addprefix $(OBJECTS_FOLDER)/$(SOURCES_FOLDER)/, $(OBJECTS))
 
 clean:
 	rm -f $(addprefix $(OBJECTS_FOLDER)/$(SOURCES_FOLDER)/, $(OBJECTS))
