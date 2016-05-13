@@ -18,7 +18,7 @@
 
 # define ALIGN4(X)			(((((((X) - 1)) >> 2) << 2) + 4))
 # define ALIGNPAGE(X, P)	(((X - 1) / P) * P + P)
-# define BLOCK_SIZE			(2 * sizeof(void *) + 2 * sizeof(int) + sizeof(t_flag))
+# define BLOCK_SIZE			(2 * sizeof(void *) + sizeof(size_t) + 2 * sizeof(int))
 # define MALLOC_DEBUG(X)	malloc_debug(__LINE__, __FILE__, X)
 
 typedef struct s_block		t_block;
