@@ -2,21 +2,23 @@
 
 int main(void)
 {
-	char	*str;
-	int		len = 100;
+	void 	*p1;
+	void 	*p2;
+	void 	*p3;
+	void 	*p4;
 
-	str = (char *)malloc(sizeof(char) * 2);
-	for (int i = 0; i < len; i++) {
-		str[i] = '*';
-	}
-	str[len] = 0;
-	printf("%s\n", str);
-	str = (char *)malloc(sizeof(char) * 2);
-	str = (char *)malloc(sizeof(char) * 2);
-	str = (char *)malloc(sizeof(char) * 2);
-	str = (char *)malloc(sizeof(char) * 2);
-	// printf("%s\n", str);
+	p1 = malloc(99);
+	p2 = malloc(97);
+	p3 = malloc(98);
+	p4 = malloc(99);
+	show_alloc_mem();
 
-	// show_alloc_mem();
+	free(p2);
+	printf("%s\n", "after free p2");
+	show_alloc_mem();
+	p2 = malloc(62);
+	printf("%s\n", "Remaloc p2");
+	show_alloc_mem();
+
 	return 0;
 }

@@ -1,6 +1,6 @@
 #include <malloc_helpers.h>
 
-int	valid_add(void *p)
+int	valid_addr(void *p)
 {
 	char	*tmp;
 

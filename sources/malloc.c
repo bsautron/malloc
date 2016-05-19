@@ -2,7 +2,7 @@
 
 t_block		*g_base[3];
 
-void 	*get_new_zone(t_block **last, size_t size, int type_zone)
+static void 	*get_new_zone(t_block **last, size_t size, int type_zone)
 {
 	t_block		*b;
 	void 		*not_first_expand;
@@ -36,7 +36,7 @@ void 	*get_new_zone(t_block **last, size_t size, int type_zone)
 	return (b);
 }
 
-void *get_block(t_block **last, size_t size, int type_zone)
+static void *get_block(t_block **last, size_t size, int type_zone)
 {
 	t_block		*b;
 
@@ -48,14 +48,14 @@ void *get_block(t_block **last, size_t size, int type_zone)
 	{
 		if ((b->size - size) >= (BLOCK_SIZE + 4))
 			split_block(b, size);
-		b->flag ^= IS_FREE;
+		b->flag ^= FLAG_FREE;
 	}
 	else
 	{
 		get_new_zone(last, size, type_zone);
 		b = find_block(last, size, type_zone);
 		if (b)
-			b->flag ^= IS_FREE;
+			b->flag ^= FLAG_FREE;
 	}
 	return (b);
 }

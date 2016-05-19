@@ -13,8 +13,10 @@
 # define SMALL_ALLOC_SIZE	127000
 # define SMALL_ZONE_SIZE	(4096 * getpagesize())
 
-# define IS_FREE			001000
-# define IS_START_HEAP		010000
+# define FLAG_FREE			001000
+# define FLAG_START_HEAP	010000
+# define IS_FREE(B)			(((B)->flag & FLAG_FREE) != 0)
+# define IS_START_HEAP(B)	(((B)->flag & FLAG_START_HEAP) != 0)
 
 # define ALIGN4(X)			(((((((X) - 1)) >> 2) << 2) + 4))
 # define ALIGNPAGE(X, P)	(((X - 1) / P) * P + P)
@@ -60,6 +62,8 @@ extern t_block	*g_base[3];
 t_block			*find_block(t_block **last, size_t size, int type_zone);
 t_block			*extend_heap(t_block **last, size_t size, int type_zone);
 void			split_block(t_block *b, size_t size);
+t_block			*fusion(t_block *b);
+int				valid_addr(void *p);
 
 void			malloc_debug(int line, char *file, char *str);
 

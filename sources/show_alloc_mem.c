@@ -7,10 +7,10 @@ static void print_memory(t_block *b, char *zone_name)
 	tmp = b;
 	while (tmp)
 	{
-		if ((tmp->flag & IS_START_HEAP) != 0)
+		if (IS_START_HEAP(tmp))
 			printf("%s : %p\n", zone_name, tmp);
-		if ((tmp->flag & IS_FREE) == 0)
-			printf("%p - %p (+ %d): %lu octets\n", tmp->data, tmp->data + tmp->size, tmp->rest, tmp->size);
+		// if (!IS_FREE(tmp))
+			printf("\t[%4s]: %p - %p (+ %d): %lu octets\n", (IS_FREE(tmp)) ? "free" : "",  tmp->data, tmp->data + tmp->size, tmp->rest, tmp->size);
 		tmp = tmp->next;
 	}
 }

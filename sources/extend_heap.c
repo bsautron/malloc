@@ -12,7 +12,8 @@ t_block	*extend_heap(t_block **last, size_t size, int type_zone)
 	b->size = size;
 	b->rest = align_size - size - BLOCK_SIZE;
 	b->next = NULL;
-	b->flag = IS_FREE | IS_START_HEAP | type_zone;
+	b->prev = *last;
+	b->flag = FLAG_FREE | FLAG_START_HEAP | type_zone;
 	if (*last)
 		(*last)->next = b;
 	else

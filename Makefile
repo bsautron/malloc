@@ -10,6 +10,9 @@ SOURCES = malloc.c \
 			extend_heap.c \
 			malloc_debug.c \
 			show_alloc_mem.c \
+			valid_addr.c \
+			fusion.c \
+			free.c \
 
 SOURCES_FOLDER = sources
 
