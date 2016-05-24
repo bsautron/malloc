@@ -16,7 +16,8 @@ int main(void)
 	free(p2);
 	printf("%s\n", "after free p2");
 	show_alloc_mem();
-	p2 = malloc(62);
+
+	p2 = malloc(101);
 	printf("%s\n", "Remaloc p2");
 	show_alloc_mem();
 

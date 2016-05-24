@@ -46,8 +46,13 @@ static void *get_block(t_block **last, size_t size, int type_zone)
 	// printf("find %p\n", b);
 	if (b)
 	{
-		if ((b->size - size) >= (BLOCK_SIZE + 4))
+		if (ALIGN4(size) + BLOCK_SIZE < b->size + b->rest)
 			split_block(b, size);
+		else
+		{
+			b->rest = (b->size + b->rest) - size;
+			b->size = size;
+		}
 		b->flag ^= FLAG_FREE;
 	}
 	else
