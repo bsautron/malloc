@@ -2,24 +2,15 @@
 
 int main(void)
 {
-	void 	*p1;
-	void 	*p2;
-	void 	*p3;
-	void 	*p4;
+	int		*a;
 
-	p1 = malloc(99);
-	p2 = malloc(97);
-	p3 = malloc(98);
-	p4 = malloc(99);
+	a = (int*)malloc(sizeof(int) * 1);
+	a[0] = 935;
+	printf("%d\n", a[0]);
 	show_alloc_mem();
-
-	free(p2);
-	printf("%s\n", "after free p2");
+	free(a);
 	show_alloc_mem();
-
-	p2 = malloc(101);
-	printf("%s\n", "Remaloc p2");
-	show_alloc_mem();
+	// free(&a);
 
 	return 0;
 }

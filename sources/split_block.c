@@ -15,6 +15,7 @@ void	split_block(t_block *b, size_t size)
 	if (IS_START_HEAP(new))
 		new->flag ^= FLAG_START_HEAP;
 	new->flag |= FLAG_FREE;
+	new->ptr = new->data;
 	b->size = size;
 	b->rest = align_size - size;
 	b->next = new;

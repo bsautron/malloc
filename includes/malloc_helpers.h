@@ -45,6 +45,7 @@ typedef struct	s_block
 	t_block	*next;
 	t_block	*prev;
 	size_t	size;
+	void	*ptr;
 	int		rest;
 	int		flag;
 	char	data[1];

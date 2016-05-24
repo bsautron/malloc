@@ -14,6 +14,7 @@ t_block	*extend_heap(t_block **last, size_t size, int type_zone)
 	b->next = NULL;
 	b->prev = *last;
 	b->flag = FLAG_FREE | FLAG_START_HEAP | type_zone;
+	b->ptr = b->data;
 	if (*last)
 		(*last)->next = b;
 	else
