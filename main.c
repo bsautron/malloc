@@ -2,14 +2,15 @@
 
 int main(void)
 {
-	int		*a;
+	int		*a = NULL;
 
-	a = (int*)malloc(sizeof(int) * 1);
-	a[0] = 935;
-	printf("%d\n", a[0]);
+	a = malloc(234);
+	malloc(10);
+	malloc(10);
 	show_alloc_mem();
-	free(a);
+	a = realloc(a, 100);
 	show_alloc_mem();
+	// free(a);
 	// free(&a);
 
 	return 0;

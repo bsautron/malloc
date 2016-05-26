@@ -1,13 +1,13 @@
 #include <malloc_helpers.h>
 
-void 	free(void *p)
+void 	free(void *ptr)
 {
 	t_block		*b;
 	size_t		align_size;
 
-	if (valid_addr(p))
+	if (valid_addr(ptr))
 	{
-		b = p - BLOCK_SIZE;
+		b = ptr - BLOCK_SIZE;
 		align_size = ALIGNPAGE(b->size + BLOCK_SIZE, getpagesize());
 		b->flag |= FLAG_FREE;
 		if (b->prev && IS_FREE(b->prev))

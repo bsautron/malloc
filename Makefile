@@ -5,6 +5,7 @@ endif
 NAME = libft_malloc_$(HOSTTYPE)
 DEPENDENCIES = libft
 SOURCES = malloc.c \
+			realloc.c \
 			split_block.c \
 			find_block.c \
 			extend_heap.c \

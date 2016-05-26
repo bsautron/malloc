@@ -2,19 +2,18 @@
 
 static t_block	*get_block(void *p)
 {
-	char	*tmp;
-
-	tmp = p;
-	return (p = tmp -= BLOCK_SIZE);
+	if (p)
+		return (p -= BLOCK_SIZE);
+	return (NULL);
 }
 
 // Attention faut voir avec ->ptr et ->data;
 int	valid_addr(void *p)
 {
-	char	*tmp;
+	t_block		*meta_block;
 
-	tmp = p;
-	if (p)
-		return (p == ((t_block *)(tmp - BLOCK_SIZE))->data);
+	meta_block = get_block(p);
+	if (meta_block)
+		return (meta_block->ptr == p);
 	return (0);
 }
