@@ -36,31 +36,39 @@ static void 	*get_new_zone(t_block **last, size_t size, int type_zone)
 	return (b);
 }
 
+static void	prepare_block(t_block **b, size_t size, int type_zone)
+{
+	t_block		*tmp;
+
+	tmp = *b;
+	if (ALIGN4(size) + BLOCK_SIZE < tmp->size + tmp->rest && type_zone != LARGE)
+		split_block(tmp, size);
+	else
+	{
+		tmp->rest = (tmp->size + tmp->rest) - size;
+		tmp->size = size;
+	}
+	tmp->flag ^= FLAG_FREE;
+}
+
 static void *get_block(t_block **last, size_t size, int type_zone)
 {
 	t_block		*b;
 
+	printf("\tdebut get block, *last = g_base = %p\n", *last);
+	if (*last) printf("\tdebut get block, *last->next = %p\n", (*last)->next);
 	if (*last == NULL)
 		get_new_zone(last, size, type_zone);
 	b = find_block(last, size, type_zone);
+
 	// printf("find %p\n", b);
 	if (b)
-	{
-		if (ALIGN4(size) + BLOCK_SIZE < b->size + b->rest)
-			split_block(b, size);
-		else
-		{
-			b->rest = (b->size + b->rest) - size;
-			b->size = size;
-		}
-		b->flag ^= FLAG_FREE;
-	}
+		prepare_block(&b, size, type_zone);
 	else
 	{
 		get_new_zone(last, size, type_zone);
 		b = find_block(last, size, type_zone);
-		if (b)
-			b->flag ^= FLAG_FREE;
+		prepare_block(&b, size, type_zone);
 	}
 	return (b);
 }
@@ -96,5 +104,6 @@ void 	*malloc(size_t size)
 		b = get_block(&last, size, LARGE);
 		// return (NULL);
 	}
+	printf(" --> Malloc return meta (%p)\n", b);
 	return (b->data);
 }
