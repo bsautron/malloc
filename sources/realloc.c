@@ -19,7 +19,8 @@ void 	*realloc(void *ptr, size_t size)
 		{
 			b->rest = b->size + b->rest - size;
 			b->size = size;
-			split_block(b, size);
+			if (align_size < b->size + b->rest - BLOCK_SIZE)
+				split_block(b, size);
 			return (b);
 		}
 		else
