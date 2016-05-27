@@ -18,6 +18,7 @@ static void print_memory(t_block *b, char *zone_name)
 // sort by addr
 void 	show_alloc_mem(void)
 {
+	printf("%s\n", "--------- show_alloc_mem ---------");
 	print_memory(g_base[TINY], "TINY");
 	print_memory(g_base[SMALL], "SMALL");
 	print_memory(g_base[LARGE], "LARGE");

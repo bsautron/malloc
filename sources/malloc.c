@@ -55,11 +55,12 @@ static void *get_block(t_block **last, size_t size, int type_zone)
 {
 	t_block		*b;
 
-	printf("\tdebut get block, *last = g_base = %p\n", *last);
-	if (*last) printf("\tdebut get block, *last->next = %p\n", (*last)->next);
+	// printf("\tdebut get block, *last = g_base = %p\n", *last);
+	// if (*last) printf("\tdebut get block, *last->next = %p\n", (*last)->next);
 	if (*last == NULL)
 		get_new_zone(last, size, type_zone);
 	b = find_block(last, size, type_zone);
+	// printf("\t\tfind %p\n", b);
 
 	// printf("find %p\n", b);
 	if (b)
@@ -104,6 +105,5 @@ void 	*malloc(size_t size)
 		b = get_block(&last, size, LARGE);
 		// return (NULL);
 	}
-	printf(" --> Malloc return meta (%p)\n", b);
-	return (b->data);
+	return ((b) ? b->data : NULL);
 }

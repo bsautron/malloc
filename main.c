@@ -2,11 +2,13 @@
 
 int main(void)
 {
-	int		*a = NULL;
+	char 	*a;
+	char 	*b;
+	char 	*c;
 
 	a = malloc(500000);
-	a = malloc(500000);
-	a = malloc(500000);
+	b = malloc(500000);
+	c = malloc(500000);
 	// malloc(10);
 	// malloc(10);
 	// show_alloc_mem();
@@ -14,7 +16,9 @@ int main(void)
 	show_alloc_mem();
 	free(a);
 	show_alloc_mem();
-	// free(&a);
+	malloc(444444);
+	show_alloc_mem();
+	a[0] = '3';
 
 	return 0;
 }

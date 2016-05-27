@@ -5,17 +5,14 @@ void 	delete_one(t_block **b)
 	t_block		*tmp;
 
 	tmp = *b;
-	printf("*b = %p\n", *b);
-	printf("--- %p\n", tmp->next);
-	printf("*b->next = %p\n", tmp->next);
-	printf("*b->prev = %p\n", tmp->prev);
 	if (tmp)
 	{
 		if (tmp->prev)
 			tmp->prev->next = tmp->next;
 		if (tmp->next)
 			tmp->next->prev = tmp->prev;
-		
+		if (!tmp->prev)
+			g_base[tmp->flag & 111] = tmp->next;
 	}
 	*b = NULL;
 }
@@ -23,6 +20,7 @@ void 	delete_one(t_block **b)
 void 	free(void *ptr)
 {
 	t_block		*b;
+	void 		*tmp_munmap;
 	size_t		align_size;
 
 	if (valid_addr(ptr))
@@ -36,8 +34,9 @@ void 	free(void *ptr)
 			b = fusion(b);
 		if (IS_START_HEAP(b) && ((b->next && IS_START_HEAP(b->next)) || !b->next))
 		{
+			tmp_munmap = b;
 			delete_one(&b);
-			munmap(b, align_size);
+			munmap(tmp_munmap, align_size);
 		}
 	}
 }

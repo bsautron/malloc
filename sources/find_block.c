@@ -14,7 +14,7 @@ t_block			*find_block(t_block **last, size_t size, int type_zone)
 		*last = b;
 		b = b->next;
 	}
-	printf("%p\n", b);
-	printf("%s search: %lu all: %lu\n", "Find size + rest =", align_size, b->size + b->rest);
+	// printf("%p\n", b);
+	// printf("%s search: %lu all: %lu\n", "Find size + rest =", align_size, b->size + b->rest);
 	return (b);
 }
