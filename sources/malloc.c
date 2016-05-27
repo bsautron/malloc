@@ -79,7 +79,6 @@ void 	*malloc(size_t size)
 	t_block		*b;
 	t_block		*last;
 
-	// printf("-- %s: %ld --\n", "new malloc", size);
 	if (size <= 0)
 	{
 		MALLOC_DEBUG("size <= 0 -> return NULL");

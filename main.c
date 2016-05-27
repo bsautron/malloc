@@ -17,7 +17,7 @@ int main(void)
 	free(a);
 	// show_alloc_mem();
 	malloc(444444);
-	// show_alloc_mem();
+	show_alloc_mem();
 	a[0] = '3';
 
 	return 0;

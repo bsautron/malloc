@@ -14,7 +14,6 @@ void 	*realloc(void *ptr, size_t size)
 		if (size <= 0)
 			return (ptr);
 		b = ptr - BLOCK_SIZE;
-		printf("%lu, %lu\n", align_size, b->size + b->rest);
 		if (align_size <= b->size + b->rest)
 		{
 			b->rest = b->size + b->rest - size;
