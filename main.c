@@ -13,11 +13,11 @@ int main(void)
 	// malloc(10);
 	// show_alloc_mem();
 	// a = realloc(a, 5000);
-	show_alloc_mem();
+	// show_alloc_mem();
 	free(a);
-	show_alloc_mem();
+	// show_alloc_mem();
 	malloc(444444);
-	show_alloc_mem();
+	// show_alloc_mem();
 	a[0] = '3';
 
 	return 0;

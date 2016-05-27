@@ -1,6 +1,6 @@
 #include <malloc_helpers.h>
 
-void 	delete_one(t_block **b)
+static void 	delete_one(t_block **b)
 {
 	t_block		*tmp;
 
