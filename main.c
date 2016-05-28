@@ -6,9 +6,9 @@ int main(void)
 	// char 	*b;
 	// char 	*c;
 
-	// for (int i = 0; i < 10000; i++) {
+	for (int i = 0; i < 1000; i++) {
 		free(malloc(500000));
-	// }
+	}
 
 	// b = malloc(500000);
 	// c = malloc(500000);
@@ -20,7 +20,7 @@ int main(void)
 	// free(a);
 	// show_alloc_mem();
 	// malloc(444444);
-	show_alloc_mem();
+	// show_alloc_mem();
 	// a[0] = '3';
 
 	return 0;
