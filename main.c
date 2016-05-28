@@ -5,9 +5,10 @@ int main(void)
 	// char 	*a;
 	// char 	*b;
 	// char 	*c;
+  size_t  size = 10 * 4096;
 
 	for (int i = 0; i < 1000; i++) {
-		free(malloc(500000));
+    free(malloc(size));
 	}
 
 	// b = malloc(500000);
@@ -23,5 +24,5 @@ int main(void)
 	// show_alloc_mem();
 	// a[0] = '3';
 
-	return 0;
+	return (0);
 }

@@ -79,6 +79,7 @@ void 	*malloc(size_t size)
 	t_block		*b;
 	t_block		*last;
 
+  ft_putendl("hello");
 	if (size <= 0)
 	{
 		MALLOC_DEBUG("size <= 0 -> return NULL");
@@ -88,7 +89,6 @@ void 	*malloc(size_t size)
 	{
 		MALLOC_DEBUG("Malloc to TINY_ZONE");
 		last = g_base[TINY];
-		// printf("last %p\n", last);
 		b = get_block(&last, size, TINY);
 	}
 	else if (size <= SMALL_ALLOC_SIZE)
@@ -102,7 +102,6 @@ void 	*malloc(size_t size)
 		MALLOC_DEBUG("Malloc to LARGE_ZONE");
 		last = g_base[LARGE];
 		b = get_block(&last, size, LARGE);
-		// return (NULL);
 	}
 	return ((b) ? b->data : NULL);
 }
