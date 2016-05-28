@@ -36,7 +36,9 @@ void 	free(void *ptr)
 		{
 			tmp_munmap = b;
 			delete_one(&b);
-			munmap(tmp_munmap, align_size);
+			printf("%p, free size %lu\n", tmp_munmap, align_size);
+			printf("munmap return %d\n", munmap(tmp_munmap, align_size));
+			// printf("%d\n", ((t_block *)tmp_munmap)->flag);
 		}
 	}
 }

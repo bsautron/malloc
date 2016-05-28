@@ -4,6 +4,7 @@
 # include <libft.h>
 # include <sys/mman.h>
 # include <sys/resource.h>
+#include <stdio.h>//
 // use getlimit, getpagesize
 
 # define TINY_ALLOC_SIZE	992
