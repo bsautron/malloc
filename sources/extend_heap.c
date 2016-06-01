@@ -18,7 +18,9 @@ t_block	*extend_heap(t_block **last, size_t size, int type_zone)
 	if (*last)
 		(*last)->next = b;
 	else
+	{
+		b->flag |= FLAG_FRIST_EXTEND;
 		(*last) = b;
-		// printf("%p, expand size %lu\n", b, b->size + b->rest + BLOCK_SIZE);
+	}
 	return (b);
 }

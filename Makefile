@@ -52,7 +52,7 @@ $(OBJECTS_FOLDER)/$(SOURCES_FOLDER)/%.o: $(SOURCES_FOLDER)/%.c $(addprefix $(INC
 
 prog: all
 	$(CC) $(CFLAGS) -I $(INCLUDES_FOLDER) $(INCLUDES_LIBRARIES) -o main.o -c main.c
-	$(CC) $(CFLAGS) -I $(INCLUDES_FOLDER) main.o $(addprefix $(OBJECTS_FOLDER)/$(SOURCES_FOLDER)/, $(OBJECTS)) -L. -lft_malloc_$(HOSTTYPE)
+	$(CC) $(CFLAGS) -I $(INCLUDES_FOLDER) main.o $(addprefix $(OBJECTS_FOLDER)/$(SOURCES_FOLDER)/, $(OBJECTS)) -Llibft -lft -L. -lft_malloc_$(HOSTTYPE)
 
 $(MAIN_OBJECT): $(MAIN)
 	$(CC) $(CFLAGS) -I $(INCLUDES_LIBRARIES) -o $(MAIN_OBJECT) -c $(MAIN)

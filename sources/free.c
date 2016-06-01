@@ -20,7 +20,6 @@ static void 	delete_one(t_block **b)
 void 	free(void *ptr)
 {
 	t_block		*b;
-	char 		*tmp_munmap;
 	size_t		align_size;
 
 	if (valid_addr(ptr))
@@ -30,16 +29,15 @@ void 	free(void *ptr)
 		b->flag |= FLAG_FREE;
 		if (b->prev && IS_FREE(b->prev))
 			b = fusion(b->prev);
-		if (b->next) // the condition with the next is in fusion
+		if (b->next)
 			b = fusion(b);
 		if (IS_START_HEAP(b) && ((b->next && IS_START_HEAP(b->next)) || !b->next))
 		{
-			tmp_munmap = (char *)b;
-			delete_one(&b);
-			// printf("%p, free size %lu\n", tmp_munmap, align_size);
-      tmp_munmap[0] = 0;
-			munmap(tmp_munmap, align_size);
-			// printf("%d\n", ((t_block *)tmp_munmap)->flag);
+			if (!IS_FIRST_EXTEND(b))
+			{
+				delete_one(&b);
+				munmap(b, align_size);
+			}
 		}
 	}
 }

@@ -2,6 +2,12 @@
 
 t_block		*g_base[3];
 
+static void 	*return_null(char *str)
+{
+	MALLOC_DEBUG(str);
+	return (NULL);
+}
+
 static void 	*get_new_zone(t_block **last, size_t size, int type_zone)
 {
 	t_block		*b;
@@ -9,10 +15,7 @@ static void 	*get_new_zone(t_block **last, size_t size, int type_zone)
 
 	not_first_expand = *last;
 	if (size <= 0)
-	{
-		MALLOC_DEBUG("Can't get zone with 0 size");
-		return (NULL);
-	}
+		return return_null("Can't get zone with 0 size");
 	else if (type_zone == TINY)
 	{
 		MALLOC_DEBUG("Get zone for TINY");
@@ -25,10 +28,8 @@ static void 	*get_new_zone(t_block **last, size_t size, int type_zone)
 	}
 	else
 		MALLOC_DEBUG("Get zone for LARGE");
-	b = extend_heap(last, size, type_zone);
-	if (!b)
-		return (NULL);
-
+	if (!(b = extend_heap(last, size, type_zone)))
+		return (return_null("Can't extend_heap the heap"));
 	if (not_first_expand)
 		(*last)->next = b;
 	else
@@ -55,14 +56,9 @@ static void *get_block(t_block **last, size_t size, int type_zone)
 {
 	t_block		*b;
 
-	// printf("\tdebut get block, *last = g_base = %p\n", *last);
-	// if (*last) printf("\tdebut get block, *last->next = %p\n", (*last)->next);
 	if (*last == NULL)
 		get_new_zone(last, size, type_zone);
 	b = find_block(last, size, type_zone);
-	// printf("\t\tfind %p\n", b);
-
-	// printf("find %p\n", b);
 	if (b)
 		prepare_block(&b, size, type_zone);
 	else
@@ -79,12 +75,8 @@ void 	*malloc(size_t size)
 	t_block		*b;
 	t_block		*last;
 
-  ft_putendl("hello");
 	if (size <= 0)
-	{
-		MALLOC_DEBUG("size <= 0 -> return NULL");
-		return (NULL);
-	}
+		return return_null("size <= 0 -> return NULL");
 	else if (size <= TINY_ALLOC_SIZE)
 	{
 		MALLOC_DEBUG("Malloc to TINY_ZONE");
@@ -103,5 +95,5 @@ void 	*malloc(size_t size)
 		last = g_base[LARGE];
 		b = get_block(&last, size, LARGE);
 	}
-	return ((b) ? b->data : NULL);
+	return ((b) ? b->data : return_null("Can't get block"));
 }
