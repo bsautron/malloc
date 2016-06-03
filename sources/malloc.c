@@ -15,7 +15,7 @@ static void 	*get_new_zone(t_block **last, size_t size, int type_zone)
 
 	not_first_expand = *last;
 	if (size <= 0)
-		return return_null("Can't get zone with 0 size");
+		return return_null("/!\\ Can't get zone with 0 size");
 	else if (type_zone == TINY)
 	{
 		MALLOC_DEBUG("Get zone for TINY");
@@ -29,7 +29,7 @@ static void 	*get_new_zone(t_block **last, size_t size, int type_zone)
 	else
 		MALLOC_DEBUG("Get zone for LARGE");
 	if (!(b = extend_heap(last, size, type_zone)))
-		return (return_null("Can't extend_heap the heap"));
+		return (NULL);
 	if (not_first_expand)
 		(*last)->next = b;
 	else
@@ -75,8 +75,9 @@ void 	*malloc(size_t size)
 	t_block		*b;
 	t_block		*last;
 
+	MALLOC_DEBUG("-- MALLOC --");
 	if (size <= 0)
-		return return_null("size <= 0 -> return NULL");
+		return return_null("/!\\ size <= 0 -> return NULL");
 	else if (size <= TINY_ALLOC_SIZE)
 	{
 		MALLOC_DEBUG("Malloc to TINY_ZONE");
@@ -95,5 +96,5 @@ void 	*malloc(size_t size)
 		last = g_base[LARGE];
 		b = get_block(&last, size, LARGE);
 	}
-	return ((b) ? b->data : return_null("Can't get block"));
+	return ((b) ? b->data : return_null("/!\\ Malloc FAILED"));
 }

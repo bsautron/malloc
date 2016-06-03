@@ -4,6 +4,7 @@ void malloc_debug(int line, char *file, char *str)
 {
 	if (getenv("MALLOC_DEBUG"))
 	{
+		ft_putstr("[MALLOC DEBUG]: ");
 		if (getenv("MALLOC_DEBUG_FILE"))
 		{
 			ft_putstr("[malloc_debug] Line ");

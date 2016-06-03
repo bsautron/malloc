@@ -4,10 +4,11 @@
 # include <libft.h>
 # include <sys/mman.h>
 # include <sys/resource.h>
+// #include <stdio.h>//
 // use getlimit, getpagesize
 
 # define TINY_ALLOC_SIZE	992
-# define TINY_ZONE_SIZE		(512 * getpagesize())
+# define TINY_ZONE_SIZE		(512 * getpagesize()) // try to < pages reclaime
 
 # define SMALL_ALLOC_SIZE	127000
 # define SMALL_ZONE_SIZE	(4096 * getpagesize())
@@ -45,8 +46,8 @@ typedef struct	s_block
 {
 	t_block	*next;
 	t_block	*prev;
-	size_t	size;
 	void	*ptr;
+	size_t	size;
 	int		rest;
 	int		flag;
 	char	data[1];

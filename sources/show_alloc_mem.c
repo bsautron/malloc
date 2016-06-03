@@ -37,6 +37,22 @@ static void print_addr(void *addr, int end_line)
 		ft_putchar('\n');
 }
 
+static void print_line_memory(t_block *b)
+{
+	print_addr(b->data, 0);
+	ft_putstr(" - ");
+	print_addr(b->data + b->size, 0);
+	if (getenv("MALLOC_DEBUG"))
+	{
+		ft_putstr(" (+ ");
+		ft_putnbr(b->rest);
+		ft_putstr(")");
+	}
+	ft_putstr(" : ");
+	print_size_t(b->size);
+	ft_putendl(" octets");
+}
+
 static void print_memory(t_block *b, char *zone_name, size_t *total)
 {
 	t_block	*tmp;
@@ -50,14 +66,17 @@ static void print_memory(t_block *b, char *zone_name, size_t *total)
 			ft_putstr(" : ");
 			print_addr(tmp, 1);
 		}
-		if (!IS_FREE(tmp))
+		if (getenv("MALLOC_DEBUG"))
 		{
-			print_addr(tmp->data, 0);
-			ft_putstr(" - ");
-			print_addr(tmp->data + tmp->size, 0);
-			ft_putstr(" : ");
-			print_size_t(tmp->size);
-			ft_putendl(" octets");
+			ft_putchar('\t');
+			ft_putstr((IS_FREE(tmp)) ? "[free] " : "[    ] ");
+			print_line_memory(tmp);
+			if (!IS_FREE(tmp))
+				*total += tmp->size;
+		}
+		else if (!IS_FREE(tmp))
+		{
+			print_line_memory(tmp);
 			*total += tmp->size;
 		}
 		tmp = tmp->next;

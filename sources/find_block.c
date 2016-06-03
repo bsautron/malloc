@@ -12,5 +12,9 @@ t_block			*find_block(t_block **last, size_t size, int type_zone)
 		*last = b;
 		b = b->next;
 	}
+	if (!b)
+		MALLOC_DEBUG("/!\\ No block found");
+	else
+		MALLOC_DEBUG("New block found");
 	return (b);
 }

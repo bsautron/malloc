@@ -22,6 +22,7 @@ void 	free(void *ptr)
 	t_block		*b;
 	size_t		align_size;
 
+	MALLOC_DEBUG("-- FREE --");
 	if (valid_addr(ptr))
 	{
 		b = ptr - BLOCK_SIZE;
@@ -36,8 +37,13 @@ void 	free(void *ptr)
 			if (!IS_FIRST_EXTEND(b))
 			{
 				delete_one(&b);
-				munmap(b, align_size);
+				if (munmap(b, align_size) == 0)
+					MALLOC_DEBUG("munmap ZONE");
+				else
+					MALLOC_DEBUG("/!\\ munmap FAILED");
 			}
 		}
+		else
+			MALLOC_DEBUG("No munmap");
 	}
 }
