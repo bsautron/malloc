@@ -1,13 +1,24 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   malloc_helpers.h                                   :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: bsautron <bsautron@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2016/06/03 17:11:16 by bsautron          #+#    #+#             */
+/*   Updated: 2016/06/03 17:11:17 by bsautron         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef MALLOC_HELPERS_H
 # define MALLOC_HELPERS_H
 
 # include <libft.h>
 # include <sys/mman.h>
 # include <sys/resource.h>
-// use getlimit, getpagesize
 
 # define TINY_ALLOC_SIZE	992
-# define TINY_ZONE_SIZE		(512 * getpagesize()) // try to < pages reclaime
+# define TINY_ZONE_SIZE		(512 * getpagesize())
 
 # define SMALL_ALLOC_SIZE	127000
 # define SMALL_ZONE_SIZE	(4096 * getpagesize())
@@ -22,27 +33,19 @@
 
 # define ALIGN4(X)			(((((((X) - 1)) >> 2) << 2) + 4))
 # define ALIGNPAGE(X, P)	(((X - 1) / P) * P + P)
-# define BLOCK_SIZE			(3 * sizeof(void *) + sizeof(size_t) + 2 * sizeof(int))
+# define BLOCK_SIZE			(3*sizeof(void *) + sizeof(size_t) + 2*sizeof(int))
 # define MALLOC_DEBUG(X)	malloc_debug(__LINE__, __FILE__, X)
 
 typedef struct s_block		t_block;
 
-enum e_zone
+enum			e_zone
 {
 	TINY,
 	SMALL,
 	LARGE
 };
 
-typedef union	u_flag
-{
-	int		all_flags;
-	char	start_heap;
-	char	type_zone;
-	char	free;
-}				t_flag;
-
-typedef struct	s_block
+struct			s_block
 {
 	t_block	*next;
 	t_block	*prev;
@@ -51,7 +54,7 @@ typedef struct	s_block
 	int		rest;
 	int		flag;
 	char	data[1];
-}				t_block;
+};
 
 typedef struct	s_mmap
 {
