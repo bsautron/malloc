@@ -3,25 +3,11 @@
 
 int main(void)
 {
-	malloc(100000000);
-	malloc(1000);
-	malloc(1000);
-	malloc(1000);
-	malloc(100000000);
-	malloc(1000);
-	malloc(1000);
-	malloc(1000);
-	malloc(10);
-	malloc(10);
-	malloc(10);
-	malloc(10);
-	malloc(100000000);
-	malloc(100000000);
-	malloc(100000000);
-	malloc(1000);
-	malloc(1000);
-	malloc(1000);
+	char *str;
 
+	str = (char *)malloc(sizeof(char) * 10);
+	str[0] = 54;
+	str = realloc(str, 9);
 	show_alloc_mem();
 	return (0);
 }

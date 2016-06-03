@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   valid_addr.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: bsautron <bsautron@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2016/06/03 16:43:53 by bsautron          #+#    #+#             */
+/*   Updated: 2016/06/03 16:43:59 by bsautron         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include <malloc_helpers.h>
 
 static t_block	*get_block(void *p)
@@ -7,7 +19,7 @@ static t_block	*get_block(void *p)
 	return (NULL);
 }
 
-int	valid_addr(void *p)
+int				valid_addr(void *p)
 {
 	t_block		*meta_block;
 	int			ret;

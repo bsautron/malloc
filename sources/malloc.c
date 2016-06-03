@@ -1,21 +1,33 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   malloc.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: bsautron <bsautron@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2016/06/03 16:51:21 by bsautron          #+#    #+#             */
+/*   Updated: 2016/06/03 16:51:22 by bsautron         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include <malloc.h>
 
 t_block		*g_base[3];
 
-static void 	*return_null(char *str)
+static void	*return_null(char *str)
 {
 	MALLOC_DEBUG(str);
 	return (NULL);
 }
 
-static void 	*get_new_zone(t_block **last, size_t size, int type_zone)
+static void	*get_new_zone(t_block **last, size_t size, int type_zone)
 {
 	t_block		*b;
-	void 		*not_first_expand;
+	void		*not_first_expand;
 
 	not_first_expand = *last;
 	if (size <= 0)
-		return return_null("/!\\ Can't get zone with 0 size");
+		return (return_null("/!\\ Can't get zone with 0 size"));
 	else if (type_zone == TINY)
 	{
 		MALLOC_DEBUG("Get zone for TINY");
@@ -52,7 +64,7 @@ static void	prepare_block(t_block **b, size_t size, int type_zone)
 	tmp->flag ^= FLAG_FREE;
 }
 
-static void *get_block(t_block **last, size_t size, int type_zone)
+static void	*get_block(t_block **last, size_t size, int type_zone)
 {
 	t_block		*b;
 
@@ -70,14 +82,14 @@ static void *get_block(t_block **last, size_t size, int type_zone)
 	return (b);
 }
 
-void 	*malloc(size_t size)
+void		*malloc(size_t size)
 {
 	t_block		*b;
 	t_block		*last;
 
 	MALLOC_DEBUG("-- MALLOC --");
 	if (size <= 0)
-		return return_null("/!\\ size <= 0 -> return NULL");
+		return (return_null("/!\\ size <= 0 -> return NULL"));
 	else if (size <= TINY_ALLOC_SIZE)
 	{
 		MALLOC_DEBUG("Malloc to TINY_ZONE");

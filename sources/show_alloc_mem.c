@@ -1,6 +1,18 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   show_alloc_mem.c                                   :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: bsautron <bsautron@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2016/06/03 16:45:54 by bsautron          #+#    #+#             */
+/*   Updated: 2016/06/03 16:45:55 by bsautron         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include <malloc.h>
 
-static void print_size_t(size_t n)
+static void	print_size_t(size_t n)
 {
 	if (n >= 10)
 	{
@@ -11,7 +23,7 @@ static void print_size_t(size_t n)
 		ft_putchar(n + '0');
 }
 
-static void print_addr(void *addr, int end_line)
+static void	print_addr(void *addr, int end_line)
 {
 	char	buffer[128];
 	char	hex[17];
@@ -37,7 +49,7 @@ static void print_addr(void *addr, int end_line)
 		ft_putchar('\n');
 }
 
-static void print_line_memory(t_block *b)
+static void	print_line_memory(t_block *b)
 {
 	print_addr(b->data, 0);
 	ft_putstr(" - ");
@@ -53,7 +65,24 @@ static void print_line_memory(t_block *b)
 	ft_putendl(" octets");
 }
 
-static void print_memory(t_block *b, size_t *total)
+static void	print_and_count(t_block *b, size_t *total)
+{
+	if (getenv("MALLOC_DEBUG"))
+	{
+		ft_putchar('\t');
+		ft_putstr((IS_FREE(b)) ? "[free] " : "[    ] ");
+		print_line_memory(b);
+		if (!IS_FREE(b))
+			*total += b->size;
+	}
+	else if (!IS_FREE(b))
+	{
+		print_line_memory(b);
+		*total += b->size;
+	}
+}
+
+static void	print_memory(t_block *b, size_t *total)
 {
 	t_block	*tmp;
 
@@ -71,19 +100,7 @@ static void print_memory(t_block *b, size_t *total)
 			ft_putstr(" : ");
 			print_addr(tmp, 1);
 		}
-		if (getenv("MALLOC_DEBUG"))
-		{
-			ft_putchar('\t');
-			ft_putstr((IS_FREE(tmp)) ? "[free] " : "[    ] ");
-			print_line_memory(tmp);
-			if (!IS_FREE(tmp))
-				*total += tmp->size;
-		}
-		else if (!IS_FREE(tmp))
-		{
-			print_line_memory(tmp);
-			*total += tmp->size;
-		}
+		print_and_count(tmp, total);
 		tmp = tmp->next;
 		if (tmp && IS_START_HEAP(tmp))
 			break ;
@@ -106,7 +123,7 @@ static int	count_start_heap(t_block *b)
 	return (ret);
 }
 
-static void get_start_heap(size_t *start_heap, t_block *b)
+static void	get_start_heap(size_t *start_heap, t_block *b)
 {
 	int		i;
 	t_block	*tmp;
@@ -123,7 +140,7 @@ static void get_start_heap(size_t *start_heap, t_block *b)
 	}
 }
 
-static void size_t_sort(size_t *tab, int len)
+static void	size_t_sort(size_t *tab, int len)
 {
 	int		i;
 	int		j;
@@ -147,7 +164,7 @@ static void size_t_sort(size_t *tab, int len)
 	}
 }
 
-static void show(int len, size_t *total)
+static void	show(int len, size_t *total)
 {
 	size_t	start_heap[len];
 	int		i;
@@ -160,16 +177,17 @@ static void show(int len, size_t *total)
 	i = 0;
 	while (i < len)
 		print_memory((t_block *)start_heap[i++], total);
-
 }
 
-void 	show_alloc_mem(void)
+void		show_alloc_mem(void)
 {
 	size_t		total;
 	int			len;
 
 	total = 0;
-	len = count_start_heap(g_base[TINY]) + count_start_heap(g_base[SMALL]) + count_start_heap(g_base[LARGE]);
+	len = count_start_heap(g_base[TINY])
+		+ count_start_heap(g_base[SMALL])
+		+ count_start_heap(g_base[LARGE]);
 	show(len, &total);
 	ft_putstr("Total : ");
 	print_size_t(total);

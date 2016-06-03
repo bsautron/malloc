@@ -1,6 +1,18 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   malloc_debug.c                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: bsautron <bsautron@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2016/06/03 16:43:01 by bsautron          #+#    #+#             */
+/*   Updated: 2016/06/03 16:43:03 by bsautron         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include <malloc_helpers.h>
 
-void malloc_debug(int line, char *file, char *str)
+void	malloc_debug(int line, char *file, char *str)
 {
 	if (getenv("MALLOC_DEBUG"))
 	{

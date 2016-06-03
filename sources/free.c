@@ -1,6 +1,18 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   free.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: bsautron <bsautron@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2016/06/03 16:38:28 by bsautron          #+#    #+#             */
+/*   Updated: 2016/06/03 16:38:29 by bsautron         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include <malloc_helpers.h>
 
-static void 	delete_one(t_block **b)
+static void		delete_one(t_block **b)
 {
 	t_block		*tmp;
 
@@ -17,7 +29,7 @@ static void 	delete_one(t_block **b)
 	*b = NULL;
 }
 
-void 	free(void *ptr)
+void			free(void *ptr)
 {
 	t_block		*b;
 	size_t		align_size;
@@ -32,16 +44,14 @@ void 	free(void *ptr)
 			b = fusion(b->prev);
 		if (b->next)
 			b = fusion(b);
-		if (IS_START_HEAP(b) && ((b->next && IS_START_HEAP(b->next)) || !b->next))
+		if ((IS_START_HEAP(b) && ((b->next && IS_START_HEAP(b->next))
+			|| !b->next)) && !IS_FIRST_EXTEND(b))
 		{
-			if (!IS_FIRST_EXTEND(b))
-			{
-				delete_one(&b);
-				if (munmap(b, align_size) == 0)
-					MALLOC_DEBUG("munmap ZONE");
-				else
-					MALLOC_DEBUG("/!\\ munmap FAILED");
-			}
+			delete_one(&b);
+			if (munmap(b, align_size) == 0)
+				MALLOC_DEBUG("munmap ZONE");
+			else
+				MALLOC_DEBUG("/!\\ munmap FAILED");
 		}
 		else
 			MALLOC_DEBUG("No munmap");
