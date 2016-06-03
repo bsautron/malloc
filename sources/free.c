@@ -12,7 +12,7 @@ static void 	delete_one(t_block **b)
 		if (tmp->next)
 			tmp->next->prev = tmp->prev;
 		if (!tmp->prev)
-			g_base[tmp->flag & 111] = tmp->next;
+			g_base[GET_ZONE(tmp)] = tmp->next;
 	}
 	*b = NULL;
 }

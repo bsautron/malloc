@@ -4,7 +4,6 @@
 # include <libft.h>
 # include <sys/mman.h>
 # include <sys/resource.h>
-// #include <stdio.h>//
 // use getlimit, getpagesize
 
 # define TINY_ALLOC_SIZE	992
@@ -19,6 +18,7 @@
 # define IS_FREE(B)			(((B)->flag & FLAG_FREE) != 0)
 # define IS_START_HEAP(B)	(((B)->flag & FLAG_START_HEAP) != 0)
 # define IS_FIRST_EXTEND(B)	(((B)->flag & FLAG_FRIST_EXTEND) != 0)
+# define GET_ZONE(B)		((B)->flag & 11)
 
 # define ALIGN4(X)			(((((((X) - 1)) >> 2) << 2) + 4))
 # define ALIGNPAGE(X, P)	(((X - 1) / P) * P + P)
