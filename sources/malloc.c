@@ -62,14 +62,18 @@ static void	prepare_block(t_block **b, size_t size, int type_zone)
 	t_block		*tmp;
 
 	tmp = *b;
-	if (ALIGN4(size) + BLOCK_SIZE < tmp->size + tmp->rest && type_zone != LARGE)
-		split_block(tmp, size);
-	else
+	if (*b)
 	{
-		tmp->rest = (tmp->size + tmp->rest) - size;
-		tmp->size = size;
+		if (ALIGN4(size) + BLOCK_SIZE < tmp->size + tmp->rest
+			&& type_zone != LARGE)
+			split_block(tmp, size);
+		else
+		{
+			tmp->rest = (tmp->size + tmp->rest) - size;
+			tmp->size = size;
+		}
+		tmp->flag ^= FLAG_FREE;
 	}
-	tmp->flag ^= FLAG_FREE;
 }
 
 static void	*get_block(t_block **last, size_t size, int type_zone)

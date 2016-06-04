@@ -90,8 +90,6 @@ void			split_block(t_block *b, size_t size);
 t_block			*fusion(t_block *b);
 int				valid_addr(void *p);
 void			print_memory(t_block *b, size_t *total);
-
-
 void			malloc_debug(int line, char *file, char *str);
 
 #endif
