@@ -7,6 +7,7 @@ DEPENDENCIES = libft
 SOURCES = malloc.c \
 			realloc.c \
 			split_block.c \
+			print_memory.c \
 			find_block.c \
 			extend_heap.c \
 			malloc_debug.c \
