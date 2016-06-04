@@ -16,6 +16,7 @@
 # include <libft.h>
 # include <sys/mman.h>
 # include <sys/resource.h>
+# include <pthread.h>
 
 # define TINY_ALLOC_SIZE	992
 # define TINY_ZONE_SIZE		(512 * getpagesize())
@@ -45,6 +46,14 @@ enum			e_zone
 	LARGE
 };
 
+enum			e_fn_malloc
+{
+	EMALLOC,
+	EREALLOC,
+	EFREE,
+	ESHOW_ALLOC_MEM
+};
+
 struct			s_block
 {
 	t_block	*next;
@@ -63,7 +72,17 @@ typedef struct	s_mmap
 	t_block		*large;
 }				t_mmap;
 
+typedef struct	s_thread_safe
+{
+	pthread_mutex_t	mutex_malloc;
+	pthread_mutex_t	mutex_realloc;
+	pthread_mutex_t	mutex_free;
+	pthread_mutex_t	mutex_show_alloc_mem;
+}				t_thread_safe;
+
 extern t_block	*g_base[3];
+
+extern t_thread_safe g_thread_safe;
 
 t_block			*find_block(t_block **last, size_t size, int type_zone);
 t_block			*extend_heap(t_block **last, size_t size, int type_zone);

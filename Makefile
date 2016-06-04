@@ -20,7 +20,7 @@ SOURCES_FOLDER = sources
 LIBRARIES_FOLDER = .
 CC = clang
 LIB_NAME = $(NAME).so
-CFLAGS = -Wextra -Wall -Werror
+CFLAGS = -Wextra -Wall -Werror -D_REENTRANT
 TEST_FORDER = test
 INCLUDES_FOLDER = includes
 OBJECTS_FOLDER = .objects/$(NAME)
@@ -58,7 +58,7 @@ $(MAIN_OBJECT): $(MAIN)
 	$(CC) $(CFLAGS) -I $(INCLUDES_LIBRARIES) -o $(MAIN_OBJECT) -c $(MAIN)
 
 $(LIB_NAME): $(addprefix $(OBJECTS_FOLDER)/$(SOURCES_FOLDER)/, $(OBJECTS))
-	$(CC) $(CFLAGS) -shared -I $(INCLUDES_FOLDER) $(LIBRARIES) -o $@ $(addprefix $(OBJECTS_FOLDER)/$(SOURCES_FOLDER)/, $(OBJECTS))
+	$(CC) $(CFLAGS) -shared -I $(INCLUDES_FOLDER) $(LIBRARIES) -o $@ $(addprefix $(OBJECTS_FOLDER)/$(SOURCES_FOLDER)/, $(OBJECTS)) -lpthread
 
 clean:
 	rm -f $(addprefix $(OBJECTS_FOLDER)/$(SOURCES_FOLDER)/, $(OBJECTS))

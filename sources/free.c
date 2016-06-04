@@ -29,11 +29,21 @@ static void		delete_one(t_block **b)
 	*b = NULL;
 }
 
+static void		delete_munmap(t_block **b, size_t align_size)
+{
+	delete_one(b);
+	if (munmap(*b, align_size) == 0)
+		MALLOC_DEBUG("munmap ZONE");
+	else
+		MALLOC_DEBUG("/!\\ munmap FAILED");
+}
+
 void			free(void *ptr)
 {
 	t_block		*b;
 	size_t		align_size;
 
+	pthread_mutex_lock(&g_thread_safe.mutex_free);
 	MALLOC_DEBUG("-- FREE --");
 	if (valid_addr(ptr))
 	{
@@ -46,14 +56,9 @@ void			free(void *ptr)
 			b = fusion(b);
 		if ((IS_START_HEAP(b) && ((b->next && IS_START_HEAP(b->next))
 			|| !b->next)) && !IS_FIRST_EXTEND(b))
-		{
-			delete_one(&b);
-			if (munmap(b, align_size) == 0)
-				MALLOC_DEBUG("munmap ZONE");
-			else
-				MALLOC_DEBUG("/!\\ munmap FAILED");
-		}
+			delete_munmap(&b, align_size);
 		else
 			MALLOC_DEBUG("No munmap");
 	}
+	pthread_mutex_unlock(&g_thread_safe.mutex_free);
 }

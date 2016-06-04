@@ -40,17 +40,28 @@ static void	*bigger_malloc(void *ptr, t_block *b, size_t size)
 	return (newp);
 }
 
+static void	*return_realloc(void *ptr, char *str)
+{
+	pthread_mutex_unlock(&g_thread_safe.mutex_realloc);
+	if (ptr)
+		return (ptr);
+	if (str)
+		MALLOC_DEBUG(str);
+	return (NULL);
+}
+
 void		*realloc(void *ptr, size_t size)
 {
 	t_block	*b;
 
+	pthread_mutex_lock(&g_thread_safe.mutex_realloc);
 	MALLOC_DEBUG("-- REALLOC --");
 	if (!ptr)
-		return (malloc(size));
+		return (return_realloc(malloc(size), NULL));
 	if (valid_addr(ptr))
 	{
 		if (size <= 0)
-			return (ptr);
+			return (return_realloc(ptr, NULL));
 		b = ptr - BLOCK_SIZE;
 		if (ALIGN4(size) <= b->size + b->rest)
 		{
@@ -60,10 +71,10 @@ void		*realloc(void *ptr, size_t size)
 			if (b->size + b->rest > BLOCK_SIZE
 				&& ALIGN4(size) < b->size + b->rest - BLOCK_SIZE)
 				split_block(b, size);
-			return (b->data);
+			return (return_realloc(b->data, NULL));
 		}
 		else
-			return (bigger_malloc(ptr, b, size));
+			return (return_realloc(bigger_malloc(ptr, b, size), NULL));
 	}
-	return (NULL);
+	return (return_realloc(NULL, NULL));
 }

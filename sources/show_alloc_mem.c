@@ -184,6 +184,7 @@ void		show_alloc_mem(void)
 	size_t		total;
 	int			len;
 
+	pthread_mutex_lock(&g_thread_safe.mutex_show_alloc_mem);
 	total = 0;
 	len = count_start_heap(g_base[TINY])
 		+ count_start_heap(g_base[SMALL])
@@ -192,4 +193,5 @@ void		show_alloc_mem(void)
 	ft_putstr("Total : ");
 	print_size_t(total);
 	ft_putendl(" octets");
+	pthread_mutex_unlock(&g_thread_safe.mutex_show_alloc_mem);
 }
